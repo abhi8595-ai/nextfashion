@@ -49,7 +49,7 @@ const toggleOrder = (orderNumber: string) => {
     <div class="flex h-full flex-col">
       <div class="flex items-center justify-between border-b border-black/10 px-4 py-4 dark:border-white/10">
         <div>
-          <p class="text-[11px] uppercase tracking-[0.35em] text-neutral-500 dark:text-neutral-400">Customer account</p>
+          <p class="text-[11px] uppercase tracking-[0.35em] text-neutral-500 dark:text-neutral-400">Customer Profile & orders</p>
           <h3 class="text-xl font-black text-neutral-900 dark:text-white">Profile & orders</h3>
         </div>
         <button
@@ -204,9 +204,9 @@ const toggleOrder = (orderNumber: string) => {
           </div>
           <div class="space-y-2 rounded-3xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-black/20">
             <p class="text-sm font-semibold text-neutral-900 dark:text-white">Contact support</p>
-            <p class="text-sm text-neutral-600 dark:text-neutral-300">Email: hello@lane9.example</p>
-            <p class="text-sm text-neutral-600 dark:text-neutral-300">Phone: +1 (555) 010-2040</p>
-            <p class="text-sm text-neutral-600 dark:text-neutral-300">Hours: Mon–Fri, 9:00–18:00</p>
+            <p class="text-sm text-neutral-600 dark:text-neutral-300">Email: info@weroza.com</p>
+            <p class="text-sm text-neutral-600 dark:text-neutral-300">Phone: +7972274363</p>
+            <p class="text-sm text-neutral-600 dark:text-neutral-300">Hours: Mon–sun, 9:00–10:00</p>
           </div>
         </section>
       </div>

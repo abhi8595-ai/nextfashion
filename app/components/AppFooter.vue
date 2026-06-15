@@ -41,11 +41,8 @@ const chooseLocale = code => {
       <div class="grid gap-8 lg:grid-cols-[1.1fr_0.8fr_0.8fr_0.9fr]">
         <div class="space-y-4">
           <div class="flex items-center gap-3">
-            <div class="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#b31015] shadow-lg shadow-red-900/20">
-              <img class="h-8 w-8 rounded-xl" src="/logo.svg" alt="Lane 9 logo" />
-            </div>
+            
             <div>
-              <p class="text-xs uppercase tracking-[0.35em] text-neutral-500 dark:text-neutral-400">Premium Store</p>
               <h3 class="brand-mark text-2xl font-black uppercase tracking-[0.28em] text-neutral-900 dark:text-white md:text-[1.9rem]">Lane 9</h3>
             </div>
           </div>
@@ -71,9 +68,9 @@ const chooseLocale = code => {
         <div class="space-y-3">
           <h4 class="text-sm font-black uppercase tracking-[0.25em] text-neutral-500 dark:text-neutral-400">Support</h4>
           <ul class="space-y-2 text-sm text-neutral-700 dark:text-neutral-200">
-            <li>hello@lane9.example</li>
-            <li>+1 (555) 010-2040</li>
-            <li>Mon–Fri • 9:00–18:00</li>
+            <li>info@weroza.com</li>
+            <li>7972274363</li>
+            <li>Mon–sat <br> 9:00–10:00</li>
           </ul>
         </div>
 
@@ -104,7 +101,7 @@ const chooseLocale = code => {
       </div>
 
       <div class="flex flex-col gap-3 border-t border-black/10 pt-5 text-xs text-neutral-500 dark:border-white/10 dark:text-neutral-400 lg:flex-row lg:items-center lg:justify-between">
-        <div>© {{ new Date().getFullYear() }} Lane 9. All rights reserved.</div>
+        <div>© {{ new Date().getFullYear() }} Lane 9.   All rights reserved.</div>
         <div class="flex flex-wrap items-center gap-3">
           <span>Secure payments</span>
           <span>•</span>
