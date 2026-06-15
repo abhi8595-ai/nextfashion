@@ -23,7 +23,7 @@ export const addToCartMutation = gql`
             stockQuantity
             stockStatus
             image {
-              sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+              sourceUrl
             }
           }
           attributes {

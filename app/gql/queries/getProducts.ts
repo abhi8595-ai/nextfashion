@@ -17,11 +17,11 @@ export const getProductsQuery = gql`
             }
           }
           image {
-            sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+            sourceUrl
           }
           galleryImages {
             nodes {
-              sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+              sourceUrl
             }
           }
         }

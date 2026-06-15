@@ -25,7 +25,7 @@ useSeoMeta({
 
 <template>
   <AppHeader />
-  <main class="pt-[72px] lg:pt-20 min-h-[calc(100vh-72px)]">
+  <main class="min-h-[calc(100vh-72px)]">
     <NuxtPage />
   </main>
   <AppFooter />
@@ -35,6 +35,12 @@ useSeoMeta({
 </template>
 
 <style lang="postcss">
+@import url('https://fonts.googleapis.com/css2?family=Ude+Figg&family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  font-family: 'Inter', sans-serif;
+}
+
 .dark {
   @apply bg-black text-neutral-100;
   color-scheme: dark;

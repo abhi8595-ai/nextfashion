@@ -6,9 +6,32 @@ export const checkoutMutation = gql`
     checkout(input: $input) {
       order {
         total
+        subtotal
+        shippingTotal
         orderNumber
         date
         paymentMethodTitle
+        status
+        billing {
+          firstName
+          lastName
+          email
+          phone
+          address1
+          city
+          postcode
+        }
+        lineItems {
+          nodes {
+            product {
+              node {
+                name
+              }
+            }
+            quantity
+            total
+          }
+        }
       }
     }
   }

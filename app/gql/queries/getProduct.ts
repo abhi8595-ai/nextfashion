@@ -13,11 +13,11 @@ export const getProductQuery = gql`
         salePrice
         description
         image {
-          sourceUrl(size: LARGE)
+          sourceUrl
         }
         galleryImages {
           nodes {
-            sourceUrl(size: LARGE)
+            sourceUrl
           }
         }
         allPaColor {
@@ -36,7 +36,7 @@ export const getProductQuery = gql`
               nodes {
                 slug
                 image {
-                  sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+                  sourceUrl
                 }
                 allPaColor {
                   nodes {
@@ -75,11 +75,11 @@ export const getProductQuery = gql`
                 }
               }
               image {
-                sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+                sourceUrl
               }
               galleryImages {
                 nodes {
-                  sourceUrl(size: WOOCOMMERCE_THUMBNAIL)
+                  sourceUrl
                 }
               }
             }

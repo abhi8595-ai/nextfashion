@@ -53,13 +53,34 @@ export interface CheckoutUserDetails {
   phone: string;
   city: string;
   address1: string;
+  postcode: string;
 }
 
 export interface CheckoutOrder {
+  id?: string;
   total: string;
+  subtotal?: string;
+  shippingTotal?: string;
   orderNumber: string;
   date: string;
   paymentMethodTitle: string;
+  status?: string;
+  billing?: {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    phone?: string;
+    address1?: string;
+    city?: string;
+    postcode?: string;
+  };
+  lineItems?: {
+    nodes?: Array<{
+      product?: { node?: { name?: string } };
+      quantity?: number;
+      total?: string;
+    }>;
+  };
 }
 
 export interface CheckoutResponse {

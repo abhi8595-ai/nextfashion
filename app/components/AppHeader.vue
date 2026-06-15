@@ -8,6 +8,8 @@ const isLoading = ref(false);
 const suggestionMenu = ref(false);
 const onClickOutsideRef = ref(null);
 const cartModal = ref(false);
+const sidebarOpen = ref(false);
+const mobileMenuOpen = ref(false);
 const { cart } = useCart();
 const localePath = useLocalePath();
 
@@ -44,6 +46,19 @@ watch(
   }
 );
 
+watch(suggestionMenu, open => {
+  const root = document.documentElement;
+  const body = document.body;
+
+  if (open) {
+    root.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
+  } else {
+    root.style.overflow = '';
+    body.style.overflow = '';
+  }
+});
+
 const clearSearch = () => {
   suggestionMenu.value = false;
   searchQuery.value = '';
@@ -53,6 +68,8 @@ const clearSearch = () => {
 onClickOutside(onClickOutsideRef, event => {
   suggestionMenu.value = false;
   cartModal.value = false;
+  sidebarOpen.value = false;
+  mobileMenuOpen.value = false;
 });
 
 const totalQuantity = computed(() => (cart.value || []).reduce((s, i) => s + (i.quantity || 0), 0));
@@ -66,8 +83,16 @@ const safeProduct = product => ({
 </script>
 
 <template>
-  <div class="flex w-full flex-row items-center px-3 lg:px-5 h-[72px] lg:h-20 z-40 fixed bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg">
-    <div class="flex flex-row w-full flex-nowrap items-center gap-2">
+  <header class="relative z-50 border-b border-black/5 bg-white/95 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-xl dark:border-white/10 dark:bg-black/95">
+    <div class="mx-auto flex w-full max-w-7xl flex-col">
+      <div class="sticky top-0 z-40 flex items-center justify-center px-4 py-2 text-center md:py-3">
+        <div class="bg-transparent px-4 py-2 md:px-6">
+          <h2 class="brand-mark text-2xl font-black uppercase tracking-[0.38em] text-neutral-900 dark:text-white md:text-[2rem] lg:text-[2.25rem]">LANE 9</h2>
+        </div>
+      </div>
+
+      <div class="relative z-10 flex w-full flex-row items-center px-3 lg:px-5 h-[72px] lg:h-20 bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg">
+        <div class="flex flex-row w-full flex-nowrap items-center gap-2">
       <NuxtLink
         aria-label="Home"
         class="flex items-center justify-center min-w-[52px] min-h-[52px] max-lg:min-w-12 max-lg:min-h-12 hover:bg-black/5 hover:dark:bg-white/15 max-lg:dark:bg-white/15 max-lg:bg-black/5 max-lg:hover:bg-black/10 max-lg:hover:dark:bg-white/20 rounded-2xl max-lg:rounded-full transition active:scale-95"
@@ -108,7 +133,10 @@ const safeProduct = product => ({
             'flex h-12 flex-grow rounded-full  pl-4 pr-3 transition-all hover:bg-black/10 hover:dark:bg-white/20',
             suggestionMenu ? 'bg-black/10 dark:bg-white/20' : 'bg-black/5 dark:bg-white/15',
           ]">
-          <div @click="suggestionMenu = true" class="flex w-full items-center gap-4">
+          <div
+            @click="suggestionMenu = true"
+            @focus="suggestionMenu = true"
+            class="flex w-full items-center gap-4">
             <div v-if="!suggestionMenu" class="flex text-neutral-500 dark:text-neutral-400">
               <UIcon name="i-iconamoon-search-bold" size="20" />
             </div>
@@ -138,12 +166,51 @@ const safeProduct = product => ({
           </span>
         </span>
       </button>
+      <button
+        type="button"
+        @click="sidebarOpen = !sidebarOpen"
+        class="hover:bg-black/5 hover:dark:bg-white/15 max-lg:dark:bg-white/15 max-lg:bg-black/5 max-lg:hover:bg-black/10 max-lg:hover:dark:bg-white/20 min-w-12 min-h-12 flex items-center justify-center rounded-full cursor-pointer relative"
+        aria-label="Open customer sidebar">
+        <UIcon class="text-[#5f5f5f] dark:text-[#b7b7b7]" name="i-iconamoon-profile-circle-fill" size="26" />
+      </button>
+        </div>
+      </div>
     </div>
-  </div>
+  </header>
+  <Transition name="slide-down">
+    <div
+      v-if="mobileMenuOpen"
+      ref="onClickOutsideRef"
+      class="fixed left-0 right-0 top-[128px] z-[55] mx-3 rounded-3xl border border-black/10 bg-white/95 p-3 shadow-2xl backdrop-blur-xl dark:border-white/10 dark:bg-black/95 lg:hidden">
+      <div class="grid gap-2">
+        <NuxtLink
+          :to="localePath('/')"
+          class="flex items-center justify-between rounded-2xl bg-black/5 px-4 py-3 text-sm font-semibold text-neutral-900 transition hover:bg-black/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+          @click="mobileMenuOpen = false">
+          Home
+          <UIcon name="i-iconamoon-home-fill" size="18" />
+        </NuxtLink>
+        <NuxtLink
+          :to="localePath('/categories')"
+          class="flex items-center justify-between rounded-2xl bg-black/5 px-4 py-3 text-sm font-semibold text-neutral-900 transition hover:bg-black/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+          @click="mobileMenuOpen = false">
+          Categories
+          <UIcon name="i-iconamoon-category-fill" size="18" />
+        </NuxtLink>
+        <NuxtLink
+          :to="localePath('/favorites')"
+          class="flex items-center justify-between rounded-2xl bg-black/5 px-4 py-3 text-sm font-semibold text-neutral-900 transition hover:bg-black/10 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+          @click="mobileMenuOpen = false">
+          Favorites
+          <UIcon name="i-iconamoon-heart-fill" size="18" />
+        </NuxtLink>
+      </div>
+    </div>
+  </Transition>
   <div
     v-if="suggestionMenu"
     ref="onClickOutsideRef"
-    class="fixed top-[72px] lg:top-20 left-0 right-0 z-50 bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg lg:rounded-b-3xl w-full">
+    class="fixed top-[128px] lg:top-[148px] left-0 right-0 z-[55] bg-white/85 dark:bg-black/85 backdrop-blur-sm dark:backdrop-blur-lg lg:rounded-b-3xl w-full">
     <div class="max-h-[calc(100vh-72px)] lg:max-h-[calc(100vh-80px)] overflow-auto">
       <!-- Loading State -->
       <div v-if="isLoading" class="flex items-center justify-center h-80">
@@ -209,7 +276,7 @@ const safeProduct = product => ({
       </div>
     </div>
   </div>
-  <div v-if="suggestionMenu || cartModal" :class="['fixed inset-0 ', cartModal ? 'z-40' : 'z-30']">
+  <div v-if="suggestionMenu || cartModal || sidebarOpen" :class="['fixed inset-0 ', cartModal || sidebarOpen ? 'z-40' : 'z-30']">
     <div class="w-full h-full bg-black/30 backdrop-blur-lg"></div>
   </div>
   <button
@@ -218,11 +285,50 @@ const safeProduct = product => ({
     <UIcon class="text-[#5f5f5f] dark:text-[#b7b7b7]" name="i-iconamoon-close" size="26" />
   </button>
   <Transition name="dropdown">
-    <Cart v-if="cartModal" ref="onClickOutsideRef" />
+    <Cart v-if="cartModal" ref="onClickOutsideRef" @close-cart="cartModal = false" />
+  </Transition>
+  <Transition name="slide-right">
+    <CustomerSidebar v-if="sidebarOpen" @close-sidebar="sidebarOpen = false" />
   </Transition>
 </template>
 
 <style lang="postcss">
+.brand-mark {
+  font-family: 'Ude Figg', 'Playfair Display', Georgia, serif;
+  font-weight: 800;
+  letter-spacing: 0.38em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.slide-right-enter-active,
+.slide-right-leave-active,
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.slide-right-enter-from,
+.slide-right-leave-to {
+  transform: translateX(100%);
+  opacity: 0;
+}
+.slide-right-enter-to,
+.slide-right-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  transform: translateY(-8px);
+  opacity: 0;
+}
+
+.slide-down-enter-to,
+.slide-down-leave-from {
+  transform: translateY(0);
+  opacity: 1;
+}
+
 ::-webkit-scrollbar {
   @apply w-0 h-0 bg-transparent;
 }
