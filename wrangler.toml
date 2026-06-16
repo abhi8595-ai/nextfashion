@@ -1,6 +1,16 @@
 name = "commerce"
 compatibility_date = "2025-01-01"
 
+[env.production]
+routes = [
+  { pattern = "weroza.com", zone_name = "weroza.com" },
+  { pattern = "www.weroza.com", zone_name = "weroza.com" }
+]
+
+[assets]
+directory = "dist/public"
+binding = "ASSETS"
+
 [[kv_namespaces]]
 binding = "CACHE"
 id = "7ad020f6d2e34c0c91e1c8cab9ef6050"
