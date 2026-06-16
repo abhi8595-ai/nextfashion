@@ -1,15 +1,8 @@
 name = "commerce"
 compatibility_date = "2025-01-01"
 
-[env.production]
-routes = [
-  { pattern = "weroza.com", zone_name = "weroza.com" },
-  { pattern = "www.weroza.com", zone_name = "weroza.com" }
-]
-
 [assets]
-directory = "dist/public"
-binding = "ASSETS"
+directory = ".output/public"
 
 [[kv_namespaces]]
 binding = "CACHE"
