@@ -17,23 +17,32 @@ const props = withDefaults(defineProps<Props>(), {
 
 const parsePrice = (priceValue: Money | null | undefined): number => {
   if (priceValue === null || priceValue === undefined || priceValue === '') return 0;
-  return parseFloat(String(priceValue).replace(/[^0-9.]/g, ''));
+  const value = String(priceValue).replace(/[^0-9.]/g, '');
+  return Number.isFinite(Number(value)) ? Number(value) : 0;
 };
 
-const totalSalePrice = computed(() => parsePrice(props.salePrice) * props.quantity);
-const totalRegularPrice = computed(() => parsePrice(props.regularPrice) * props.quantity);
+const formatPrice = (value: number) =>
+  new Intl.NumberFormat('en-IN', {
+    style: 'currency',
+    currency: 'INR',
+    maximumFractionDigits: 2,
+  }).format(value);
 
-const isSale = computed(() => {
-  const sale = parsePrice(props.salePrice);
-  const regular = parsePrice(props.regularPrice);
-  return sale > 0 && regular > 0 && sale < regular;
-});
+const salePriceValue = computed(() => parsePrice(props.salePrice));
+const regularPriceValue = computed(() => parsePrice(props.regularPrice));
+const totalSalePrice = computed(() => salePriceValue.value * props.quantity);
+const totalRegularPrice = computed(() => regularPriceValue.value * props.quantity);
+
+const formattedSalePrice = computed(() => formatPrice(salePriceValue.value));
+const formattedRegularPrice = computed(() => formatPrice(regularPriceValue.value));
+const formattedTotalSalePrice = computed(() => formatPrice(totalSalePrice.value));
+const formattedTotalRegularPrice = computed(() => formatPrice(totalRegularPrice.value));
+
+const isSale = computed(() => salePriceValue.value > 0 && regularPriceValue.value > 0 && salePriceValue.value < regularPriceValue.value);
 
 const discountPercentage = computed(() => {
   if (!isSale.value) return 0;
-  const sale = parsePrice(props.salePrice);
-  const regular = parsePrice(props.regularPrice);
-  return Math.round(((regular - sale) / regular) * 100);
+  return Math.round(((regularPriceValue.value - salePriceValue.value) / regularPriceValue.value) * 100);
 });
 </script>
 
@@ -42,44 +51,42 @@ const discountPercentage = computed(() => {
     <div v-if="variant === 'default'">
       <div v-if="isSale">
         <div class="flex items-baseline">
-          <p class="text-xl font-bold text-alizarin-crimson-700" v-html="salePrice"></p>
-          <p class="text-sm ml-2">{{ $t('product.vat_included') }}</p>
+          <p class="text-xl font-bold text-alizarin-crimson-700">{{ formattedSalePrice }}</p>
         </div>
         <div class="flex items-baseline">
           <p class="text-sm">{{ $t('product.originally') }}:</p>
-          <p class="text-sm ml-1 line-through" v-html="regularPrice"></p>
+          <p class="text-sm ml-1 line-through">{{ formattedRegularPrice }}</p>
           <p class="text-sm ml-1 text-alizarin-crimson-700">-{{ discountPercentage }}%</p>
         </div>
       </div>
       <div v-else>
         <div class="flex items-baseline">
-          <p class="text-xl font-bold" v-html="regularPrice"></p>
-          <p class="text-sm ml-2">{{ $t('product.vat_included') }}</p>
+          <p class="text-xl font-bold">{{ formattedRegularPrice }}</p>
         </div>
       </div>
     </div>
 
     <div v-else-if="variant === 'card'" class="flex gap-1">
       <template v-if="isSale">
-        <span v-html="salePrice"></span>
-        <span class="text-[#5f5f5f] dark:text-[#a3a3a3] line-through" v-html="regularPrice"></span>
+        <span>{{ formattedSalePrice }}</span>
+        <span class="text-[#5f5f5f] dark:text-[#a3a3a3] line-through">{{ formattedRegularPrice }}</span>
       </template>
       <template v-else>
-        <span v-html="regularPrice"></span>
+        <span>{{ formattedRegularPrice }}</span>
       </template>
     </div>
 
     <div v-else-if="variant === 'cart'">
       <div v-if="isSale" class="gap-1 flex flex-col">
-        <div class="font-bold">${{ totalSalePrice.toFixed(2) }}</div>
+        <div class="font-bold">{{ formattedTotalSalePrice }}</div>
         <div class="flex-wrap text-neutral-600 dark:text-neutral-300 items-baseline text-xs gap-1 flex-row flex">
           <p>{{ $t('product.originally') }}:</p>
-          <p class="line-through">${{ totalRegularPrice.toFixed(2) }}</p>
+          <p class="line-through">{{ formattedTotalRegularPrice }}</p>
           <p class="text-alizarin-crimson-700">-{{ discountPercentage }}%</p>
         </div>
       </div>
       <div v-else>
-        <div class="font-bold">${{ totalRegularPrice.toFixed(2) }}</div>
+        <div class="font-bold">{{ formattedTotalRegularPrice }}</div>
       </div>
     </div>
   </div>

@@ -22,9 +22,14 @@ useSeoMeta({
 });
 
 onMounted(() => {
-  $fetch('/api/categories').then(response => {
-    categoriesData.value = (response.productCategories?.nodes || []).filter(Boolean);
-  });
+  $fetch('/api/categories')
+    .then(response => {
+      categoriesData.value = (response.productCategories?.nodes || []).filter(Boolean);
+    })
+    .catch(error => {
+      console.error('Categories fetch failed:', error);
+      categoriesData.value = [];
+    });
 });
 
 const categories = computed(() => categoriesData.value);

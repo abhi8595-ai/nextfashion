@@ -66,7 +66,7 @@ onBeforeUnmount(() => {
               <div
                 class="absolute md:opacity-0 group-hover:opacity-100 top-2 right-2 md:-top-1 md:-right-1 transition space-y-0.5 flex flex-col p-0.5 dark:bg-white/10 bg-black/10 backdrop-blur border dark:border-white/5 border-black/5 items-center justify-center rounded-full">
                 <div class="dark:bg-white/10 bg-white/50 dark:hover:bg-white/30 hover:bg-white/100 transition-all rounded-full p-0.5 w-5 h-5 flex items-center justify-center">
-                  <UIcon size="14" name="i-iconamoon-sign-plus" class="text-black dark:text-white cursor-pointer" @click.stop="increment(product?.variation?.node?.databaseId || 0)" />
+                  <UIcon size="14" name="i-iconamoon-sign-plus" class="text-black dark:text-white cursor-pointer" @click.stop="product?.variation?.node?.databaseId && increment(product.variation.node.databaseId)" />
                 </div>
                 <span class="text-center text-sm">{{ product.quantity }}</span>
                 <div class="dark:bg-white/10 bg-white/50 dark:hover:bg-white/30 hover:bg-white/100 transition-all rounded-full p-0.5 w-5 h-5 flex items-center justify-center">
@@ -74,7 +74,7 @@ onBeforeUnmount(() => {
                     size="14"
                     :name="product.quantity > 1 ? 'i-iconamoon-sign-minus' : 'i-iconamoon-trash-light'"
                     class="text-black dark:text-white cursor-pointer"
-                    @click.stop="decrement(product?.variation?.node?.databaseId || 0)" />
+                    @click.stop="product?.variation?.node?.databaseId && decrement(product.variation.node.databaseId)" />
                 </div>
               </div>
             </div>

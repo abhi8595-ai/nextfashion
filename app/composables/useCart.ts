@@ -21,6 +21,11 @@ export const useCart = () => {
   };
 
   const handleAddToCart = async (productId: number) => {
+    if (!productId || productId <= 0) {
+      push.error('Invalid product selected');
+      return;
+    }
+
     addToCartButtonStatus.value = 'loading';
 
     try {

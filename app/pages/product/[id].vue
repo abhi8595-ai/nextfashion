@@ -17,18 +17,23 @@ const setThumbsSwiper = swiper => {
 const modules = [Navigation, Pagination, Thumbs];
 
 const route = useRoute();
-const id = computed(() => route.params.id);
-const parts = id.value.split('-');
-const sku = parts.pop();
-const slug = parts.join('-');
+const id = computed(() => (route.params.id || '').toString());
+const parts = computed(() => id.value.split('-'));
+const sku = computed(() => parts.value[parts.value.length - 1] || '');
+const slug = computed(() => parts.value.slice(0, -1).join('-'));
 
 const productResult = ref({});
 const selectedVariation = ref(null);
 
 onMounted(() => {
   $fetch('/api/product', {
-    query: { slug, sku },
-  }).then(data => (productResult.value = data.product));
+    query: { slug: slug.value, sku: sku.value },
+  })
+    .then(data => (productResult.value = data.product))
+    .catch(error => {
+      console.error('Product fetch failed:', error);
+      productResult.value = {};
+    });
 });
 
 const product = computed(() => productResult.value);
@@ -146,8 +151,8 @@ const { handleAddToCart, addToCartButtonStatus } = useCart();
             </div>
             <div class="flex">
               <button
-                @click="handleAddToCart(selectedVariation?.databaseId || 0)"
-                :disabled="addToCartButtonStatus !== 'add'"
+                @click="selectedVariation?.databaseId && handleAddToCart(selectedVariation.databaseId)"
+                :disabled="addToCartButtonStatus !== 'add' || !selectedVariation?.databaseId"
                 class="button-bezel w-full h-12 rounded-md relative tracking-wide font-semibold text-white text-sm flex justify-center items-center">
                 <Transition name="slide-up">
                   <div v-if="addToCartButtonStatus === 'add'" class="absolute">{{ $t('cart.add_to_cart') }}</div>
