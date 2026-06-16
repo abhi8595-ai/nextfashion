@@ -2,7 +2,7 @@ name = "commerce"
 compatibility_date = "2025-01-01"
 
 [assets]
-directory = ".output/public"
+directory = "dist"
 
 [[kv_namespaces]]
 binding = "CACHE"
