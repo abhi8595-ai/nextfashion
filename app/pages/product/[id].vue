@@ -22,21 +22,17 @@ const parts = computed(() => id.value.split('-'));
 const sku = computed(() => parts.value[parts.value.length - 1] || '');
 const slug = computed(() => parts.value.slice(0, -1).join('-'));
 
-const productResult = ref({});
 const selectedVariation = ref(null);
 
-onMounted(() => {
-  $fetch('/api/product', {
-    query: { slug: slug.value, sku: sku.value },
-  })
-    .then(data => (productResult.value = data.product))
-    .catch(error => {
-      console.error('Product fetch failed:', error);
-      productResult.value = {};
-    });
-});
+const { data: productData } = await useAsyncData(
+  () => `product-${slug.value}-${sku.value}`,
+  () =>
+    $fetch('/api/product', {
+      query: { slug: slug.value, sku: sku.value },
+    }).then(data => data.product),
+);
 
-const product = computed(() => productResult.value);
+const product = computed(() => productData.value || {});
 
 const selectedVariationLabel = computed(() =>
   selectedVariation.value?.attributes?.nodes?.map(attr => attr.value).join(', ') || ''

@@ -81,13 +81,19 @@ async function fetch() {
 
 onMounted(fetch);
 
-useIntervalFn(() => {
-  if (!tailEl.value || isLoading.value) return;
-  const { top } = tailEl.value.getBoundingClientRect();
-  if (top - window.innerHeight < 400) {
-    fetch();
-  }
-}, 500);
+const { stop } = useIntersectionObserver(
+  tailEl,
+  ([entry]) => {
+    if (entry.isIntersecting && !isLoading.value && pageInfo.value.hasNextPage) {
+      fetch();
+    }
+  },
+  {
+    threshold: 0.1,
+  },
+);
+
+onBeforeUnmount(stop);
 
 watch(
   () => route.query,

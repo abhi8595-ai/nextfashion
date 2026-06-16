@@ -18,7 +18,7 @@ const safeProduct = product => ({
 </script>
 
 <template>
-  <article v-for="product in (props.products || []).filter(Boolean)" :key="product?.slug || product?.sku || Math.random()">
+  <article v-for="(product, index) in (props.products || []).filter(Boolean)" :key="product?.slug || product?.sku || index">
     <NuxtLink :to="localePath(`/product/${product?.slug}-${(product?.sku || '').split('-')[0]}`)" class="group select-none">
       <div class="cursor-pointer transition ease-[ease] duration-300">
         <div class="relative pb-[133%] dark:shadow-[0_8px_24px_rgba(0,0,0,.5)] rounded-2xl overflow-hidden">

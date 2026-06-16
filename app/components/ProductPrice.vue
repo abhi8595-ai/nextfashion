@@ -21,12 +21,13 @@ const parsePrice = (priceValue: Money | null | undefined): number => {
   return Number.isFinite(Number(value)) ? Number(value) : 0;
 };
 
-const formatPrice = (value: number) =>
-  new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: 'INR',
-    maximumFractionDigits: 2,
-  }).format(value);
+const priceFormatter = new Intl.NumberFormat('en-IN', {
+  style: 'currency',
+  currency: 'INR',
+  maximumFractionDigits: 2,
+});
+
+const formatPrice = (value: number) => priceFormatter.format(value);
 
 const salePriceValue = computed(() => parsePrice(props.salePrice));
 const regularPriceValue = computed(() => parsePrice(props.regularPrice));
