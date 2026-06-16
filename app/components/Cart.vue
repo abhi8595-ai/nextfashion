@@ -8,7 +8,10 @@ const { order } = useCheckout();
 const showPaymentSuccess = ref(false);
 
 const cartItemImage = (product: any) => product?.variation?.node?.image?.sourceUrl || '/logo.svg';
-const cartItemAttributes = (product: any): Array<{ value?: string | null }> => Array.isArray(product?.variation?.attributes) ? product.variation.attributes : [];
+const cartItemAttributes = (product: any): Array<{ value?: string | null }> => {
+  const attrs = product?.variation?.attributes;
+  return Array.isArray(attrs) ? attrs : [];
+};
 const cartItemName = (product: any) => product?.product?.node?.name || 'Product';
 
 const goToProduct = (product: any) => {
@@ -58,7 +61,7 @@ onBeforeUnmount(() => {
                 <ProductPrice :sale-price="product?.variation?.node?.salePrice" :regular-price="product?.variation?.node?.regularPrice" :quantity="product.quantity" variant="cart" />
                 <div class="text-xs flex gap-2 font-medium text-neutral-600 dark:text-neutral-300">
                   <div>
-                    {{ $t('product.size') }}: {{ cartItemAttributes(product).map((attr: { value?: string | null }) => attr?.value?.toUpperCase?.() || '').filter(Boolean).join(', ') }} • {{ $t('product.quantity') }}:
+                    {{ $t('product.size') }}: {{ (cartItemAttributes(product) || []).map((attr: { value?: string | null }) => attr?.value?.toUpperCase?.() || '').filter(Boolean).join(', ') }} • {{ $t('product.quantity') }}:
                     {{ product.quantity }}
                   </div>
                 </div>
