@@ -59,6 +59,13 @@ watch(suggestionMenu, open => {
   }
 });
 
+watch(
+  () => route.fullPath,
+  () => {
+    sidebarOpen.value = false;
+  },
+);
+
 const clearSearch = () => {
   suggestionMenu.value = false;
   searchQuery.value = '';
@@ -97,7 +104,9 @@ const safeProduct = product => ({
         aria-label="Home"
         class="flex items-center justify-center min-w-[52px] min-h-[52px] max-lg:min-w-12 max-lg:min-h-12 hover:bg-black/5 hover:dark:bg-white/15 max-lg:dark:bg-white/15 max-lg:bg-black/5 max-lg:hover:bg-black/10 max-lg:hover:dark:bg-white/20 rounded-2xl max-lg:rounded-full transition active:scale-95"
         :to="localePath('/')">
-        <img class="rounded-lg max-lg:rounded-full bg-[#b31015] w-8 h-8" src="/logo.svg" alt="Logo" loading="lazy" title="logo" />
+        <div class="flex items-center justify-center rounded-lg max-lg:rounded-full bg-black w-8 h-8 text-white font-black text-lg">
+          9
+        </div>
       </NuxtLink>
       <NuxtLink
         aria-label="Categories"
