@@ -10,7 +10,9 @@ export interface VariationNode {
 
 export interface Variation {
   node: VariationNode;
-  attributes: Array<{ value: string }>;
+  attributes: {
+    nodes: Array<{ value: string }>;
+  };
 }
 
 export interface ProductNode {
