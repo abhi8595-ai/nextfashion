@@ -13,7 +13,8 @@
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
     "build": "nuxt build",
-    "deploy:pages": "bumpp && pnpm build && wrangler pages deploy dist --project-name commerce --branch master"
+    "deploy:pages": "bumpp && pnpm build && wrangler pages deploy dist --project-name commerce --branch master",
+    "deploy:vercel": "pnpm build && npx vercel --prod --confirm"
   },
   "dependencies": {
     "@nuxt/image": "^1.11.0",
