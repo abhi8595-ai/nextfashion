@@ -23,5 +23,8 @@ logs
 .env.*
 !.env.example
 
+# Wrangler / Cloudflare build state
+.wrangler
+
 #SSL certificate files
 *.pem

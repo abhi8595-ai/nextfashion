@@ -1,12 +1,10 @@
 // nuxt.config.ts
 import pkg from "./package.json";
 
-const isCloudflareRuntime = Boolean(process.env.CF_PAGES || process.env.CLOUDFLARE_PAGES);
-
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
-  modules: ["@vueuse/nuxt", "@nuxt/ui", "@nuxt/image", "notivue/nuxt", "@nuxtjs/i18n", "@nuxthub/core"],
+  modules: ["@vueuse/nuxt", "@nuxt/ui", "@nuxt/image", "notivue/nuxt", "@nuxtjs/i18n"],
 
   i18n: {
     defaultLocale: "en",
@@ -49,15 +47,6 @@ export default defineNuxtConfig({
   preset: "node-server",
   prerender: { routes: ["/sitemap.xml", "/robots.txt"] },
 },
-
-  hub: isCloudflareRuntime
-    ? {
-        cache: {
-          driver: "cloudflare-kv-binding",
-          binding: "CACHE",
-        },
-      }
-    : undefined,
 
   compatibilityDate: "2025-01-01",
 });
