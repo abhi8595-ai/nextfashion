@@ -41,14 +41,14 @@ export default defineNuxtConfig({
     },
   },
 
-  routeRules: {
-    "/": { prerender: true },
-  },
+ routeRules: {
+  "/": { prerender: true }
+},
 
-  nitro: {
-    preset: "cloudflare_pages",
-    prerender: { routes: ["/sitemap.xml", "/robots.txt"] },
-  },
+ nitro: {
+  preset: "node-server",
+  prerender: { routes: ["/sitemap.xml", "/robots.txt"] },
+},
 
   hub: isCloudflareRuntime
     ? {
