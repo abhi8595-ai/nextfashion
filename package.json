@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "@nuxt/image": "^1.11.0",
-    "vue-router": "^5.0.4",
     "@nuxt/ui": "^2.22.3",
     "@nuxthub/core": "0.10.6",
     "@nuxtjs/i18n": "10.1.0",
@@ -25,29 +24,27 @@
     "notivue": "^2.4.5",
     "nuxt": "^4.4.2",
     "swiper": "^12.1.2",
-    "vue": "latest"
+    "vue": "latest",
+    "vue-router": "^5.0.4"
   },
   "devDependencies": {
     "@iconify-json/iconamoon": "^1.2.2",
     "@iconify-json/svg-spinners": "^1.2.4",
+    "@types/node": "^25.9.3",
     "@vueuse/core": "^13.9.0",
     "@vueuse/nuxt": "^13.9.0",
     "vue-tsc": "^3.3.5",
     "wrangler": "^4.76.0"
   },
-  
- "packageManager": "pnpm@11.7.0",
-
-
-"devEngines": {
-  "packageManager": {
-    "name": "pnpm",
-    "version": "11.7.0",
-    "onFail": "warn"
+  "packageManager": "pnpm@11.7.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.7.0",
+      "onFail": "warn"
+    }
+  },
+  "overrides": {
+    "vue-router": "^5.0.4"
   }
-},
-
-"overrides": {
-  "vue-router": "^5.0.4"
-}
 }

@@ -1,6 +1,6 @@
 allowBuilds:
-  - '@parcel/watcher'
-  - 'esbuild'
-  - 'sharp'
-  - 'workerd'
-'
+  '@parcel/watcher': true
+  esbuild: true
+  sharp: true
+  workerd: true
+buildFromSource: true
