@@ -2,7 +2,7 @@
   "name": "nuxtcommerce",
   "version": "3.1.24",
   "private": true,
-  "author": "zackha",
+  "author": "wer",
   "description": "Headless storefront for Woocommerce (Nuxt/Vue)",
   "type": "module",
   "scripts": {
@@ -12,7 +12,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
-    "build": "nuxt build"
+    "build": "nuxt build",
+    "start": "node .output/server/index.mjs"
   },
   "dependencies": {
     "@nuxt/image": "^1.11.0",
