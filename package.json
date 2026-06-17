@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "nuxtcommerce",
   "version": "3.1.24",
   "private": true,
@@ -13,8 +13,7 @@
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
     "build": "nuxt build",
-    "deploy:pages": "bumpp && pnpm build && wrangler pages deploy dist --project-name commerce --branch master",
-    "deploy:vercel": "pnpm build && npx vercel --prod --confirm"
+    "deploy:pages": "bumpp && pnpm build && wrangler pages deploy dist --project-name commerce --branch master"
   },
   "dependencies": {
     "@nuxt/image": "^1.11.0",
@@ -36,7 +35,11 @@
     "vue-tsc": "^3.3.5",
     "wrangler": "^4.76.0"
   },
-  "packageManager": "pnpm@10.30.0+sha512.2b5753de015d480eeb88f5b5b61e0051f05b4301808a82ec8b840c9d2adf7748eb352c83f5c1593ca703ff1017295bc3fdd3119abb9686efc96b9fcb18200937",
+  "packageManager": "pnpm@11.7.0",
+  "devEngines": {
+    "packageManager": "pnpm@11.7.0",
+    "onFail": "warn"
+  },
   "overrides": {
     "vue-router": "^5.0.4"
   }
