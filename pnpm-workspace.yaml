@@ -1,5 +1,6 @@
-onlyBuiltDependencies:
+allowBuilds:
   - '@parcel/watcher'
-  - esbuild
-  - sharp
-  - workerd
+  - 'esbuild'
+  - 'sharp'
+  - 'workerd'
+'
