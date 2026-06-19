@@ -26,6 +26,22 @@ export const useCart = () => {
       return;
     }
 
+    const existingItem = findItem(variationId);
+    if (existingItem) {
+      const maxStock = existingItem.variation?.node?.stockQuantity;
+      const nextQuantity = existingItem.quantity + 1;
+      if (typeof maxStock === 'number' && nextQuantity > maxStock) {
+        push.error('Insufficient stock');
+        return;
+      }
+      changeQuantity(existingItem.key, nextQuantity);
+      addToCartButtonStatus.value = 'added';
+      setTimeout(() => {
+        addToCartButtonStatus.value = 'add';
+      }, 2000);
+      return;
+    }
+
     addToCartButtonStatus.value = 'loading';
 
     try {
@@ -48,9 +64,15 @@ export const useCart = () => {
       setTimeout(() => {
         addToCartButtonStatus.value = 'add';
       }, 2000);
-    } catch {
+    } catch (error: any) {
       addToCartButtonStatus.value = 'add';
-      push.error('Insufficient stock');
+      const message =
+        typeof error === 'string'
+          ? error
+          : error?.message ||
+            error?.response?.errors?.[0]?.message ||
+            'Insufficient stock';
+      push.error(message.replace(/<[^>]+>/g, '') || 'Insufficient stock');
     }
   };
 
