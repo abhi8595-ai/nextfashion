@@ -27,9 +27,8 @@ export const addToCartMutation = gql`
             }
           }
           attributes {
-            nodes {
-              value
-            }
+            name
+            value
           }
         }
       }

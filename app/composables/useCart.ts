@@ -20,8 +20,8 @@ export const useCart = () => {
     return cart.value.find(item => item.variation?.node?.databaseId === variationId);
   };
 
-  const handleAddToCart = async (variationId: number) => {
-    if (!variationId || variationId <= 0) {
+  const handleAddToCart = async (productId: number, variationId: number) => {
+    if (!productId || productId <= 0 || !variationId || variationId <= 0) {
       push.error('Invalid product selected');
       return;
     }
@@ -31,7 +31,7 @@ export const useCart = () => {
     try {
       const response = await $fetch<AddToCartResponse>('/api/cart/add', {
         method: 'POST',
-        body: { variationId, quantity: 1 },
+        body: { productId, variationId, quantity: 1 },
       });
       const incoming = response.addToCart.cartItem;
       const itemIndex = cart.value.findIndex(item => item.key === incoming.key);
@@ -71,7 +71,7 @@ export const useCart = () => {
     const item = findItem(variationId);
 
     if (!item) {
-      void handleAddToCart(variationId);
+      push.error('Cart item not found');
       return;
     }
 
@@ -102,6 +102,7 @@ export const useCart = () => {
       setCart([]);
     }
   });
+  
 
   return {
     cart,

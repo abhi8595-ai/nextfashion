@@ -56,6 +56,7 @@ export const getProductQuery = gql`
             regularPrice(format: RAW)
             attributes {
               nodes {
+                name
                 value
               }
             }
@@ -89,4 +90,3 @@ export const getProductQuery = gql`
     }
   }
 `;
-  

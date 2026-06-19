@@ -147,8 +147,8 @@ const { handleAddToCart, addToCartButtonStatus } = useCart();
             </div>
             <div class="flex">
               <button
-                @click="selectedVariation?.databaseId && handleAddToCart(selectedVariation.databaseId)"
-                :disabled="addToCartButtonStatus !== 'add' || !selectedVariation?.databaseId"
+                @click="selectedVariation?.databaseId && product.databaseId && handleAddToCart(product.databaseId, selectedVariation.databaseId)"
+                :disabled="addToCartButtonStatus !== 'add' || !selectedVariation?.databaseId || !product.databaseId"
                 class="button-bezel w-full h-12 rounded-md relative tracking-wide font-semibold text-white text-sm flex justify-center items-center">
                 <Transition name="slide-up">
                   <div v-if="addToCartButtonStatus === 'add'" class="absolute">{{ $t('cart.add_to_cart') }}</div>
