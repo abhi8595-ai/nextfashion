@@ -18,19 +18,36 @@ const modules = [Navigation, Pagination, Thumbs];
 
 const route = useRoute();
 const id = computed(() => (route.params.id || '').toString());
-const parts = computed(() => id.value.split('-'));
-const sku = computed(() => parts.value[parts.value.length - 1] || '');
-const slug = computed(() => parts.value.slice(0, -1).join('-'));
+const parts = computed(() => (id.value || '').split('-'));
+const sku = computed(() => {
+  const raw = parts.value[parts.value.length - 1] || '';
+  return raw === 'undefined' ? '' : raw;
+});
+const slug = computed(() => {
+  if (!parts.value.length) return '';
+  if (parts.value.length === 1) {
+    return parts.value[0] === 'undefined' ? '' : parts.value[0];
+  }
+  const s = parts.value.slice(0, -1).join('-');
+  return s === 'undefined' ? '' : s;
+});
 
 const selectedVariation = ref(null);
 
-const { data: productData } = await useAsyncData(
-  () => `product-${slug.value}-${sku.value}`,
-  () =>
+let productDataRef;
+if (process.client ? slug.value : slug.value) {
+  const { data } = await useAsyncData(() => `product-${slug.value}-${sku.value}`, () =>
     $fetch('/api/product', {
       query: { slug: slug.value, sku: sku.value },
-    }).then(data => data.product),
-);
+    }).then(data => data.product)
+  );
+  productDataRef = data;
+} else {
+  // no valid slug — avoid calling API
+  productDataRef = ref(null);
+}
+
+const productData = productDataRef;
 
 const product = computed(() => productData.value || {});
 

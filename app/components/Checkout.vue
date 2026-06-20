@@ -12,6 +12,7 @@ const cartTotal = computed(() => {
     const node = item.variation.node;
     const regularPrice = parseFloat(node.regularPrice) || 0;
     const salePrice = parseFloat(node.salePrice) || 0;
+
     const priceToUse =
       salePrice > 0 && salePrice < regularPrice
         ? salePrice
@@ -26,119 +27,126 @@ const cartTotal = computed(() => {
 
 <template>
   <div
-    class="md:w-96 h-full overflow-y-auto bg-black/5 dark:bg-white/10 my-3 mr-3 p-3 max-md:ml-3 rounded-3xl"
+    class="md:w-96 h-full bg-black/5 dark:bg-white/10 my-3 mr-3 max-md:ml-3 rounded-3xl flex flex-col"
     style="-webkit-overflow-scrolling: touch;"
   >
-    <div class="text-xl font-bold px-2 mb-3">
+    <!-- Header -->
+    <div class="text-xl font-bold px-4 pt-4 pb-3 shrink-0">
       Checkout
     </div>
 
     <form
       @submit.prevent="handleCheckout"
-      class="flex flex-col items-center pb-24"
+      class="flex flex-col flex-1 overflow-hidden"
     >
-      <div class="grid grid-cols-2 gap-3 billing w-full">
-        <div class="col-span-full">
-          <input
-            required
-            v-model="userDetails.email"
-            :placeholder="$t('checkout.form.email')"
-            type="email"
-          />
-        </div>
-
-        <div class="col-span-1">
-          <input
-            required
-            v-model="userDetails.firstName"
-            :placeholder="$t('checkout.form.first_name')"
-            type="text"
-          />
-        </div>
-
-        <div class="col-span-1">
-          <input
-            required
-            v-model="userDetails.lastName"
-            :placeholder="$t('checkout.form.last_name')"
-            type="text"
-          />
-        </div>
-
-        <div class="col-span-1">
-          <input
-            required
-            v-model="userDetails.phone"
-            :placeholder="$t('checkout.form.phone')"
-            type="text"
-          />
-        </div>
-
-        <div class="col-span-1">
-          <input
-            required
-            v-model="userDetails.city"
-            :placeholder="$t('checkout.form.city')"
-            type="text"
-          />
-        </div>
-
-        <div class="col-span-1">
-          <input
-            required
-            v-model="userDetails.postcode"
-            placeholder="PIN code"
-            type="text"
-          />
-        </div>
-
-        <div class="col-span-full">
-          <textarea
-            required
-            v-model="userDetails.address1"
-            :placeholder="$t('checkout.form.address')"
-            rows="2"
-          />
-        </div>
-      </div>
-
-      <div
-        class="text-sm font-semibold p-4 text-neutral-600 dark:text-neutral-400"
-      >
-        {{
-          $t('checkout.pay.description', {
-            total: cartTotal,
-            items: totalQuantity,
-          })
-        }}
-      </div>
-
-      <!-- Secure payment text -->
-      <div
-        class="w-full text-xs font-medium flex gap-1 items-center justify-center text-neutral-400 dark:text-neutral-600 mb-4"
-      >
-        <UIcon name="i-iconamoon-lock-fill" size="18" />
-        <span>Your payment is secured by Stripe</span>
-      </div>
-
-      <!-- Pay button -->
-      <button
-        type="submit"
-        :disabled="checkoutStatus !== 'order'"
-        class="pay-button-bezel w-full h-12 rounded-xl font-semibold text-white dark:text-black text-lg flex justify-center items-center"
-      >
-        <Transition name="slide-up">
-          <div v-if="checkoutStatus === 'order'">
-            {{ $t('checkout.pay.btn', { total: cartTotal }) }}
+      <!-- Scrollable Form -->
+      <div class="flex-1 overflow-y-auto px-3 pb-6">
+        <div class="grid grid-cols-2 gap-3 billing w-full">
+          <div class="col-span-full">
+            <input
+              required
+              v-model="userDetails.email"
+              :placeholder="$t('checkout.form.email')"
+              type="email"
+            />
           </div>
 
-          <UIcon
-            v-else-if="checkoutStatus === 'processing'"
-            name="i-svg-spinners-90-ring-with-bg"
-            size="22"
-          />
-        </Transition>
-      </button>
+          <div class="col-span-1">
+            <input
+              required
+              v-model="userDetails.firstName"
+              :placeholder="$t('checkout.form.first_name')"
+              type="text"
+            />
+          </div>
+
+          <div class="col-span-1">
+            <input
+              required
+              v-model="userDetails.lastName"
+              :placeholder="$t('checkout.form.last_name')"
+              type="text"
+            />
+          </div>
+
+          <div class="col-span-1">
+            <input
+              required
+              v-model="userDetails.phone"
+              :placeholder="$t('checkout.form.phone')"
+              type="text"
+            />
+          </div>
+
+          <div class="col-span-1">
+            <input
+              required
+              v-model="userDetails.city"
+              :placeholder="$t('checkout.form.city')"
+              type="text"
+            />
+          </div>
+
+          <div class="col-span-1">
+            <input
+              required
+              v-model="userDetails.postcode"
+              placeholder="PIN code"
+              type="text"
+            />
+          </div>
+
+          <div class="col-span-full">
+            <textarea
+              required
+              v-model="userDetails.address1"
+              :placeholder="$t('checkout.form.address')"
+              rows="2"
+            />
+          </div>
+        </div>
+
+        <div
+          class="text-sm font-semibold p-4 text-neutral-600 dark:text-neutral-400"
+        >
+          {{
+            $t('checkout.pay.description', {
+              total: cartTotal,
+              items: totalQuantity,
+            })
+          }}
+        </div>
+      </div>
+
+      <!-- Fixed Footer -->
+      <div
+        class="shrink-0 p-4 border-t border-neutral-200 dark:border-white/10 bg-white dark:bg-black rounded-b-3xl"
+      >
+        <div
+          class="w-full text-xs font-medium flex gap-1 items-center justify-center text-neutral-400 dark:text-neutral-600 mb-4"
+        >
+          <UIcon name="i-iconamoon-lock-fill" size="18" />
+          <span>Your payment is secured by Stripe</span>
+        </div>
+
+        <button
+          type="submit"
+          :disabled="checkoutStatus !== 'order'"
+          class="pay-button-bezel w-full h-12 rounded-xl font-semibold text-white dark:text-black text-lg flex justify-center items-center"
+        >
+          <Transition name="slide-up">
+            <div v-if="checkoutStatus === 'order'">
+              {{ $t('checkout.pay.btn', { total: cartTotal }) }}
+            </div>
+
+            <UIcon
+              v-else-if="checkoutStatus === 'processing'"
+              name="i-svg-spinners-90-ring-with-bg"
+              size="22"
+            />
+          </Transition>
+        </button>
+      </div>
     </form>
   </div>
 </template>

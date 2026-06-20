@@ -4,7 +4,13 @@ import pkg from "./package.json";
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
-  modules: ["@vueuse/nuxt", "@nuxt/ui", "@nuxt/image", "notivue/nuxt", "@nuxtjs/i18n"],
+  modules: [
+    "@vueuse/nuxt",
+    "@nuxt/ui",
+    "@nuxt/image",
+    "notivue/nuxt",
+    "@nuxtjs/i18n",
+  ],
 
   i18n: {
     defaultLocale: "en",
@@ -27,7 +33,11 @@ export default defineNuxtConfig({
   notivue: {
     position: "top-center",
     limit: 3,
-    notifications: { global: { duration: 3000 } },
+    notifications: {
+      global: {
+        duration: 3000,
+      },
+    },
   },
 
   css: ["~/assets/css/notivue.css"],
@@ -39,14 +49,12 @@ export default defineNuxtConfig({
     },
   },
 
- routeRules: {
-  "/": { prerender: true }
-},
-
- nitro: {
-  preset: "node-server",
-  prerender: { routes: ["/sitemap.xml", "/robots.txt"] },
-},
+  nitro: {
+    preset: "node-server",
+    prerender: {
+      routes: ["/sitemap.xml", "/robots.txt"],
+    },
+  },
 
   compatibilityDate: "2025-01-01",
 });
