@@ -11,6 +11,8 @@ const cartModal = ref(false);
 const sidebarOpen = ref(false);
 const mobileMenuOpen = ref(false);
 const { cart } = useCart();
+const { wishlist } = useWishlist();
+const { showPaymentSuccess } = useCheckout();
 const localePath = useLocalePath();
 
 const search = () => {
@@ -59,6 +61,12 @@ watch(suggestionMenu, open => {
   }
 });
 
+watch(cartModal, open => {
+  if (!open) {
+    showPaymentSuccess.value = false;
+  }
+});
+
 watch(
   () => route.fullPath,
   () => {
@@ -80,6 +88,7 @@ onClickOutside(onClickOutsideRef, event => {
 });
 
 const totalQuantity = computed(() => (cart.value || []).reduce((s, i) => s + (i.quantity || 0), 0));
+const favoriteCount = computed(() => (wishlist.value || []).length);
 
 const safeProduct = product => ({
   ...product,
@@ -118,9 +127,12 @@ const safeProduct = product => ({
       <NuxtLink
         aria-label="Favorites"
         exactActiveClass="bg-black dark:bg-white text-white dark:text-black"
-        class="hidden lg:flex font-semibold cursor-pointer px-4 rounded-full hover:bg-black dark:hover:bg-white h-12 items-center justify-center hover:text-white dark:hover:text-black transition active:scale-95"
+        class="hidden lg:flex relative font-semibold cursor-pointer px-4 rounded-full hover:bg-black dark:hover:bg-white h-12 items-center justify-center hover:text-white dark:hover:text-black transition active:scale-95"
         :to="localePath('/favorites')">
         {{ $t('nav.favorites') }}
+        <span v-if="favoriteCount" class="absolute -top-1 -right-2 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-alizarin-crimson-700 px-1.5 text-[10px] font-semibold text-white">
+          {{ favoriteCount }}
+        </span>
       </NuxtLink>
       <NuxtLink
         aria-label="Categories"
@@ -132,9 +144,12 @@ const safeProduct = product => ({
       <NuxtLink
         aria-label="Favorites"
         exactActiveClass="!bg-black/10 dark:!bg-white/30"
-        class="flex lg:hidden items-center justify-center min-w-12 min-h-12 rounded-full bg-black/5 dark:bg-white/15 hover:bg-black/10 dark:hover:bg-white/20 transition active:scale-95"
+        class="relative flex lg:hidden items-center justify-center min-w-12 min-h-12 rounded-full bg-black/5 dark:bg-white/15 hover:bg-black/10 dark:hover:bg-white/20 transition active:scale-95"
         :to="localePath('/favorites')">
         <UIcon class="text-[#5f5f5f] dark:text-[#b7b7b7]" name="i-iconamoon-heart-fill" size="26" />
+        <span v-if="favoriteCount" class="absolute top-0 right-0 flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-alizarin-crimson-700 px-1.5 text-[10px] font-semibold text-white">
+          {{ favoriteCount }}
+        </span>
       </NuxtLink>
       <div class="flex flex-shrink flex-grow flex-col text-sm font-semibold text-[#111] dark:text-[#eee]">
         <div

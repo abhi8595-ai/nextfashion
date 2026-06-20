@@ -158,10 +158,6 @@ const toggleOrder = (orderNumber: string) => {
               <div v-if="selectedOrder?.orderNumber === order.orderNumber" class="mt-4 rounded-2xl border border-black/10 bg-white p-4 text-sm dark:border-white/10 dark:bg-black/20">
                 <div class="grid gap-3 text-neutral-700 dark:text-neutral-200">
                   <div class="flex items-center justify-between gap-3">
-                    <span class="text-neutral-500 dark:text-neutral-400">Status</span>
-                    <strong class="capitalize">{{ order.status || 'Completed' }}</strong>
-                  </div>
-                  <div class="flex items-center justify-between gap-3">
                     <span class="text-neutral-500 dark:text-neutral-400">Payment</span>
                     <strong>{{ order.paymentMethodTitle }}</strong>
                   </div>

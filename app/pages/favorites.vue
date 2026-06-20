@@ -4,6 +4,19 @@ const { removeFromList, wishlist } = useWishlist();
 const { name } = useAppConfig().site;
 const url = useRequestURL();
 const localePath = useLocalePath();
+const router = useRouter();
+
+const productLink = (product) => {
+  const slug = product?.slug;
+  const sku = (product?.sku || '').split('-')[0] || '';
+  return localePath(`/product/${slug}-${sku}`);
+};
+
+const goToProduct = (product) => {
+  const url = productLink(product);
+  if (!url) return;
+  router.push(url);
+};
 
 const canonical = url.origin + url.pathname;
 
@@ -48,8 +61,9 @@ useSeoMeta({
             :src="safeProduct(product).image?.sourceUrl || '/logo.svg'"
             loading="lazy" />
           <NuxtLink
-            class="absolute inset-0 bg-gradient-to-t from-black/50 hover:from-black/60 flex items-end p-5"
-            :to="localePath(`/product/${product?.slug}-${(product?.sku || '').split('-')[0]}`)">
+            class="absolute inset-0 bg-gradient-to-t from-black/50 hover:from-black/60 flex items-end p-5 transition"
+            :to="productLink(product)"
+            @click.prevent="goToProduct(product)">
             <div class="grid gap-0.5 text-white">
               <ProductPrice :sale-price="product?.salePrice" :regular-price="product?.regularPrice" variant="card" />
               <div class="font-bold">{{ product?.name }}</div>

@@ -50,6 +50,7 @@ export const useCheckout = () => {
   const userDetails = useState<CheckoutUserDetails>('userDetails', defaultUserDetails);
   const orders = useState<CheckoutOrder[]>('orders', () => []);
   const checkoutStatus = ref<CheckoutStatus>('order');
+  const showPaymentSuccess = useState<boolean>('showPaymentSuccess', () => false);
 
   const persistProfile = () => {
     if (!process.client) return;
@@ -60,6 +61,8 @@ export const useCheckout = () => {
     if (!process.client) return;
     localStorage.setItem('orders', JSON.stringify(orders.value));
   };
+
+  
 
   const clearCart = () => {
     cart.value = [];
@@ -103,6 +106,7 @@ export const useCheckout = () => {
       order.value = placedOrder;
 
       if (placedOrder) {
+        showPaymentSuccess.value = true;
         const savedOrder = {
           ...placedOrder,
           id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -158,6 +162,7 @@ export const useCheckout = () => {
       userDetails.value = defaultUserDetails();
       orders.value = [demoOrder()];
     }
+    // no polling — keep initial load behavior only
   });
 
   return {
@@ -165,7 +170,9 @@ export const useCheckout = () => {
     orders,
     userDetails,
     checkoutStatus,
+    showPaymentSuccess,
     handleCheckout,
+    
     updateProfile,
     saveProfile,
   };

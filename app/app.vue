@@ -1,5 +1,6 @@
 <!--app/app.vue-->
 <script setup lang="ts">
+import { onMounted, onBeforeUnmount } from 'vue';
 const { site } = useAppConfig();
 const { name, description } = site;
 
@@ -21,11 +22,28 @@ useSeoMeta({
   keywords: `${name}, ecommerce, nuxt, woocommerce`,
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover',
 });
+
+const setVh = () => {
+  if (typeof window === 'undefined') return;
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+};
+
+onMounted(() => {
+  setVh();
+  window.addEventListener('resize', setVh);
+  window.addEventListener('orientationchange', setVh);
+});
+
+onBeforeUnmount(() => {
+  if (typeof window === 'undefined') return;
+  window.removeEventListener('resize', setVh);
+  window.removeEventListener('orientationchange', setVh);
+});
 </script>
 
 <template>
   <AppHeader />
-  <main class="min-h-[calc(100vh-72px)]">
+  <main style="min-height: calc(var(--vh, 1vh) * 100 - 72px);">
     <NuxtPage />
   </main>
   <AppFooter />
